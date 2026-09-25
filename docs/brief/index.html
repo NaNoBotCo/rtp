@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The job, in plain words — RTP UK channel</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--lacquer:#150f08;--panel:#241a12;--cream:#f2e7d3;--cream-dim:#c9baa0;--cream-faint:#94866f;
+  --gold:#e7be6a;--gold-deep:#c89a45;--verm:#ff6a45;--jade:#7fc8a0;--edge:rgba(231,190,106,.22);
+  --line:rgba(231,190,106,.14);--serif:Georgia,serif;
+  --sans:"Avenir Next","Segoe UI",system-ui,"Noto Sans Thai","Noto Sans Lao",sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--lacquer);color:var(--cream);font-family:var(--sans);font-size:18px;line-height:1.7;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:26px 18px 80px}
+[lang=th]{font-family:"Noto Sans Thai",var(--sans);line-height:1.85}
+a{color:var(--gold)}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.mark{font-weight:700;letter-spacing:.14em;color:var(--gold);font-size:14px}
+.toggle{margin-left:auto;display:flex;gap:6px}
+.toggle button{font:inherit;font-size:14px;font-weight:600;color:var(--cream-dim);background:transparent;
+  border:1px solid var(--edge);border-radius:99px;padding:6px 16px;cursor:pointer;transition:.2s}
+.toggle button[aria-pressed=true]{background:var(--gold);color:var(--lacquer);border-color:transparent}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.12;color:var(--cream);
+  margin:18px 0 6px}
+.say{color:var(--cream-faint);font-size:14.5px;margin-bottom:26px}
+h2{font-family:var(--serif);font-size:21px;color:var(--gold);margin:30px 0 8px;font-weight:600}
+h2 .n{color:var(--verm);margin-right:.4em}
+p{margin-bottom:12px;color:var(--cream-dim)}
+p b,li b{color:var(--cream);font-weight:600}
+ul{margin:0 0 12px 4px;list-style:none}
+li{padding-left:22px;position:relative;margin-bottom:9px;color:var(--cream-dim)}
+li::before{content:"›";position:absolute;left:2px;color:var(--gold-deep)}
+.tierdot{font-weight:700}.tierdot.a{color:var(--verm)}.tierdot.b{color:var(--gold)}.tierdot.c{color:var(--jade)}
+.gloss{border-top:1px solid var(--line);margin-top:14px}
+.gloss div{display:grid;grid-template-columns:170px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+.gloss .t{color:var(--cream);font-weight:600}
+@media(max-width:560px){.gloss div{grid-template-columns:1fr;gap:3px}}
+.lang{display:none}.lang.on{display:block}
+.back{display:inline-block;margin-top:34px;font-size:14px}
+@media print{body{background:#fff;color:#000}.toggle{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="mark">motdang.net · RTP</span>
+    <div class="toggle" role="group" aria-label="Language">
+      <button data-l="en" aria-pressed="true">English</button>
+      <button data-l="th" aria-pressed="false" lang="th">ไทย</button>
+    </div>
+  </div>
+
+  <!-- ENGLISH (simple) -->
+  <div class="lang on" id="en">
+    <h1>The job, in plain words.</h1>
+    <p class="say">A short read before Tuesday. Simple English.</p>
+
+    <h2><span class="n">1</span>What we sell</h2>
+    <p>We help a company called <b>RTP</b> find partners in the UK. A partner is an IT company
+    that will sell RTP's service to its own customers, under its own name. Our job: make a list
+    of the right companies to call, and call them to book meetings.</p>
+
+    <h2><span class="n">2</span>What RTP does</h2>
+    <p>RTP does <b>penetration testing</b>. With permission, they attack a customer's own
+    computer systems to find the weak spots — before real criminals find them. Another word for
+    it is <b>red team</b>. It is a normal, legal security job.</p>
+
+    <h2><span class="n">3</span>Who an MSP is</h2>
+    <p>An <b>MSP</b> is a company that runs the computers, email and security for other
+    businesses. Most MSPs do not have their own attack-testing team. So they buy the test from a
+    firm like RTP and sell it to their client under their own brand. That is called
+    <b>white-label</b>.</p>
+
+    <h2><span class="n">4</span>The three groups</h2>
+    <p>We sort the companies by how ready they are:</p>
+    <ul>
+      <li><span class="tierdot a">Group A</span> — already sells testing, but pays another firm
+      to do it. Easiest to win: we offer a better one.</li>
+      <li><span class="tierdot b">Group B</span> — sells other security, but not the test yet.
+      The test is a new thing they can add.</li>
+      <li><span class="tierdot c">Group C</span> — already gets the test through someone else.
+      We offer to take that supplier's place.</li>
+    </ul>
+
+    <h2><span class="n">5</span>The map and the list</h2>
+    <p>The webpage shows a map of the UK. Each dot is one company — <b>66</b> of them. The colour
+    is the group. The <b>names, phone numbers and the opening line</b> for each company are in a
+    private file. They are not on the webpage.</p>
+
+    <h2><span class="n">6</span>Beer's job on Tuesday</h2>
+    <p>Open the link with Zia. Look at the map together. Help him choose which group to call
+    first. Then a caller phones those companies to book partner meetings.</p>
+
+    <h2><span class="n">7</span>Before any call</h2>
+    <p>Every phone number must be checked against the UK "do-not-call" lists (<b>TPS and
+    CTPS</b>) first. Calling a listed number is against the law.</p>
+
+    <h2>Words you will hear</h2>
+    <div class="gloss">
+      <div><span class="t">MSP</span><span>A company that runs IT for other businesses.</span></div>
+      <div><span class="t">Penetration test</span><span>A permitted, staged attack to find weak spots in a system.</span></div>
+      <div><span class="t">Red team</span><span>A team that plays the attacker to test security.</span></div>
+      <div><span class="t">White-label</span><span>Selling another firm's service under your own name.</span></div>
+      <div><span class="t">CREST</span><span>A stamp that says a testing firm is trusted and checked.</span></div>
+      <div><span class="t">Channel partner</span><span>A company that resells for you.</span></div>
+      <div><span class="t">Cold call</span><span>Phoning a company that does not know you yet.</span></div>
+      <div><span class="t">TPS / CTPS</span><span>UK lists of numbers you are not allowed to cold-call.</span></div>
+    </div>
+    <a class="back" href="../">← Back to the map</a>
+  </div>
+
+  <!-- THAI (simple) -->
+  <div class="lang" id="th" lang="th">
+    <h1>งานนี้คืออะไร แบบเข้าใจง่าย</h1>
+    <p class="say">อ่านสั้น ๆ ก่อนวันอังคาร ภาษาง่าย ๆ</p>
+
+    <h2><span class="n">1</span>เราขายอะไร</h2>
+    <p>เราช่วยบริษัทชื่อ <b>RTP</b> หาพันธมิตรในอังกฤษ พันธมิตรคือบริษัทไอทีที่จะเอาบริการของ RTP
+    ไปขายให้ลูกค้าของตัวเอง ในชื่อแบรนด์ของตัวเอง งานของเราคือ ทำรายชื่อบริษัทที่ควรโทรไปคุย
+    แล้วโทรไปนัดประชุม</p>
+
+    <h2><span class="n">2</span>RTP ทำอะไร</h2>
+    <p>RTP รับ <b>เจาะระบบ</b> ให้ลูกค้า คือทดลองโจมตีระบบคอมพิวเตอร์ของลูกค้าเอง (โดยได้รับอนุญาต)
+    เพื่อหาช่องโหว่ก่อนที่แฮกเกอร์ตัวจริงจะเจอ ภาษาอังกฤษเรียกว่า penetration test หรือ red team
+    เป็นงานความปลอดภัยปกติ ถูกกฎหมาย</p>
+
+    <h2><span class="n">3</span>MSP คือใคร</h2>
+    <p><b>MSP</b> คือบริษัทที่ดูแลคอมพิวเตอร์ อีเมล และความปลอดภัย ให้ธุรกิจอื่น MSP ส่วนใหญ่
+    ไม่มีทีมเจาะระบบเอง เขาจึงซื้อบริการนี้จากบริษัทอย่าง RTP แล้วเอาไปขายต่อให้ลูกค้าในชื่อของตัวเอง
+    เรียกว่า <b>white-label</b></p>
+
+    <h2><span class="n">4</span>สามกลุ่ม</h2>
+    <p>เราจัดบริษัทเป็นสามกลุ่ม ตามว่าพร้อมแค่ไหน</p>
+    <ul>
+      <li><span class="tierdot a">กลุ่ม A</span> — ขายบริการเจาะระบบอยู่แล้ว แต่จ้างเจ้าอื่นทำ
+      ชวนให้เปลี่ยนมาใช้ RTP ได้ง่ายที่สุด</li>
+      <li><span class="tierdot b">กลุ่ม B</span> — ขายบริการความปลอดภัยอื่น ๆ แต่ยังไม่มีบริการเจาะระบบ
+      เป็นบริการใหม่ที่เพิ่มให้เขาได้</li>
+      <li><span class="tierdot c">กลุ่ม C</span> — มีบริการเจาะระบบผ่านเจ้าอื่นอยู่แล้ว
+      เราเสนอให้เปลี่ยนมาใช้ RTP แทน</li>
+    </ul>
+
+    <h2><span class="n">5</span>แผนที่กับรายชื่อ</h2>
+    <p>ในหน้าเว็บมีแผนที่อังกฤษ จุดหนึ่งจุดคือบริษัทหนึ่งแห่ง มีทั้งหมด <b>66</b> แห่ง
+    สีของจุดบอกกลุ่ม ส่วน <b>ชื่อคนที่ต้องคุย เบอร์โทร และประโยคเปิด</b> อยู่ในไฟล์ส่วนตัว
+    ไม่ได้ลงในหน้าเว็บ</p>
+
+    <h2><span class="n">6</span>งานของเบียร์วันอังคาร</h2>
+    <p>เปิดลิงก์ให้ Zia ดูด้วยกัน ดูแผนที่ไปพร้อมกัน ช่วยเขาเลือกว่าจะเริ่มโทรกลุ่มไหนก่อน
+    จากนั้นให้คนโทรติดต่อบริษัทเหล่านั้นเพื่อนัดประชุม</p>
+
+    <h2><span class="n">7</span>ก่อนโทรทุกครั้ง</h2>
+    <p>ต้องเอาเบอร์ไปเช็กกับรายชื่อ "ห้ามโทร" ของอังกฤษ (<b>TPS และ CTPS</b>) ก่อน
+    ถ้าโทรหาเบอร์ที่อยู่ในรายชื่อนั้น ถือว่าผิดกฎหมาย</p>
+
+    <h2>คำที่จะได้ยินบ่อย</h2>
+    <div class="gloss">
+      <div><span class="t">MSP</span><span>บริษัทที่รับดูแลระบบไอทีให้ธุรกิจอื่น</span></div>
+      <div><span class="t">Penetration test / เจาะระบบ</span><span>การทดลองโจมตีระบบเพื่อหาช่องโหว่ (ได้รับอนุญาต)</span></div>
+      <div><span class="t">Red team</span><span>ทีมที่เล่นเป็นแฮกเกอร์ เพื่อทดสอบความปลอดภัย</span></div>
+      <div><span class="t">White-label</span><span>เอาบริการของคนอื่นมาขายในชื่อแบรนด์ตัวเอง</span></div>
+      <div><span class="t">CREST</span><span>เครื่องหมายรับรองว่าบริษัทเจาะระบบน่าเชื่อถือ ผ่านการตรวจ</span></div>
+      <div><span class="t">Channel partner</span><span>พันธมิตรที่ช่วยขายต่อให้</span></div>
+      <div><span class="t">Cold call</span><span>โทรหาบริษัทที่ยังไม่รู้จักกันมาก่อน</span></div>
+      <div><span class="t">TPS / CTPS</span><span>รายชื่อเบอร์ที่ห้ามโทรขายของในอังกฤษ</span></div>
+    </div>
+    <a class="back" href="../">← กลับไปที่แผนที่</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{
+  const l=b.dataset.l;
+  document.querySelectorAll('.toggle button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  document.getElementById('en').classList.toggle('on', l==='en');
+  document.getElementById('th').classList.toggle('on', l==='th');
+  document.documentElement.lang=l;
+}));
+</script>
+</body>
+</html>

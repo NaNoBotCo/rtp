@@ -70,8 +70,10 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 .strip .s .k{font-size:13px;color:var(--cream-faint);margin-top:5px;letter-spacing:.03em}
 
 /* map */
-.mapwrap{position:relative;width:100%;max-width:520px;justify-self:center}
-.mapwrap svg{width:100%;height:auto;display:block;overflow:visible;filter:drop-shadow(0 30px 50px rgba(0,0,0,.5))}
+.mapwrap{position:relative;width:100%;max-width:440px;justify-self:center;
+  display:flex;flex-direction:column;align-items:center}
+.mapwrap svg{width:100%;height:auto;display:block;overflow:visible;
+  filter:drop-shadow(0 24px 44px rgba(0,0,0,.5))}
 .sea{fill:url(#seaGrad)}
 .land{fill:#241a11;stroke:rgba(231,190,106,.13);stroke-width:.8;stroke-linejoin:round}
 .land.home{fill:#33241a;stroke:rgba(231,190,106,.36);stroke-width:1}
