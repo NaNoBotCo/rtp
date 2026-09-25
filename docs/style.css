@@ -72,8 +72,8 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 /* map */
 .mapwrap{position:relative;width:100%;max-width:440px;justify-self:center;
   display:flex;flex-direction:column;align-items:center}
-.mapwrap svg{width:100%;height:auto;display:block;overflow:visible;
-  filter:drop-shadow(0 24px 44px rgba(0,0,0,.5))}
+.mapwrap svg{width:100%;height:auto;display:block;overflow:hidden;border-radius:14px;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
 .sea{fill:url(#seaGrad)}
 .land{fill:#241a11;stroke:rgba(231,190,106,.13);stroke-width:.8;stroke-linejoin:round}
 .land.home{fill:#33241a;stroke:rgba(231,190,106,.36);stroke-width:1}
@@ -92,7 +92,7 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
   .office .ring{animation:pulse 2.8s var(--out) infinite}
   @keyframes pulse{0%{opacity:.9;r:5}70%,100%{opacity:0;r:20}}
 }
-.office .lbl{font:600 12px var(--sans);fill:var(--cream);letter-spacing:.05em}
+.office .lbl{font:600 12px var(--sans);fill:var(--cream);letter-spacing:.05em;text-anchor:end}
 .scale line{stroke:var(--cream-faint);stroke-width:1.4}
 .scale text{font:11px var(--sans);fill:var(--cream-faint)}
 .legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
@@ -133,9 +133,7 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;
   transition:background .2s,color .2s,transform .2s var(--spring)}
 .mapctrl button:hover{background:var(--gold);color:var(--lacquer);transform:translateY(-1px)}
-.maphint{position:absolute;left:10px;bottom:6px;right:52px;font-size:11px;color:var(--cream-faint);
-  pointer-events:none;letter-spacing:.02em;transition:opacity .3s}
-.mapstage.zoomed .maphint{opacity:.35}
+.maphint{font-size:11.5px;color:var(--cream-faint);text-align:center;margin-top:11px;letter-spacing:.02em}
 .mapcard{position:absolute;z-index:7;min-width:212px;max-width:264px;padding:14px 15px 15px;
   border-radius:14px;background:rgba(21,15,8,.97);border:1px solid var(--edge);box-shadow:var(--shadow);
   opacity:0;transform:translateY(6px) scale(.98);transition:opacity .18s,transform .2s var(--spring)}
