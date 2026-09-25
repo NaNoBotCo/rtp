@@ -46,7 +46,8 @@ for i, r in enumerate(rows):
         f'<g class="pin {r["t"]}" data-t="{r["t"]}" data-i="{i}" tabindex="0" role="button" '
         f'aria-label="{title}" style="--d:{delay}s">'
         f'<circle class="halo" cx="{x}" cy="{y}" r="13"/>'
-        f'<circle class="dot" cx="{x}" cy="{y}" r="5.5"/></g>')
+        f'<circle class="dot" cx="{x}" cy="{y}" r="5.5"/>'
+        f'<circle class="hit" cx="{x}" cy="{y}" r="17"/></g>')
 pins = "".join(pins)
 bloom = "".join(bloom)
 
@@ -370,16 +371,29 @@ document.querySelectorAll('.mapctrl button').forEach(b=>b.addEventListener('clic
   else if(b.dataset.z==='out') zoomAt(cx,cy,1/1.6);
   else {{vb={{...VB0}}; applyVB(); clamp(); closeCard();}}
 }}));
-// drag to pan (pointer), suppress click if moved
-let drag=null, moved=false;
-svg.addEventListener('pointerdown',e=>{{drag={{x:e.clientX,y:e.clientY}};moved=false;svg.setPointerCapture(e.pointerId);}});
-svg.addEventListener('pointermove',e=>{{if(!drag)return;
-  const r=svg.getBoundingClientRect(), dx=(e.clientX-drag.x)/r.width*vb.w, dy=(e.clientY-drag.y)/r.height*vb.h;
-  if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){{moved=true;stage.classList.add('grabbing');}}
-  vb.x-=dx; vb.y-=dy; drag={{x:e.clientX,y:e.clientY}}; clamp(); applyVB();
+// pan vs tap: a tap opens the pin under the finger; a drag pans (touch + mouse)
+let down=null,last=null,dragging=false;
+svg.addEventListener('pointerdown',e=>{{down={{x:e.clientX,y:e.clientY}};last={{x:e.clientX,y:e.clientY}};dragging=false;}});
+svg.addEventListener('pointermove',e=>{{if(!down)return;
+  if(!dragging && Math.abs(e.clientX-down.x)+Math.abs(e.clientY-down.y)>9){{
+    dragging=true; try{{svg.setPointerCapture(e.pointerId);}}catch(_){{}} stage.classList.add('grabbing'); hideTip();
+  }}
+  if(dragging){{
+    const r=svg.getBoundingClientRect();
+    vb.x-=(e.clientX-last.x)/r.width*vb.w; vb.y-=(e.clientY-last.y)/r.height*vb.h;
+    last={{x:e.clientX,y:e.clientY}}; clamp(); applyVB();
+  }}
 }});
-function endDrag(){{drag=null;stage.classList.remove('grabbing');}}
-svg.addEventListener('pointerup',endDrag); svg.addEventListener('pointercancel',endDrag);
+function pointerEnd(e){{
+  if(down && !dragging){{
+    const el=document.elementFromPoint(e.clientX,e.clientY), pin=el&&el.closest&&el.closest('.pin');
+    if(pin) openCard(+pin.dataset.i,pin);
+    else if(!(el&&el.closest&&el.closest('.mapcard,.mapctrl'))) closeCard();
+  }}
+  down=null;dragging=false;stage.classList.remove('grabbing');
+}}
+svg.addEventListener('pointerup',pointerEnd);
+svg.addEventListener('pointercancel',()=>{{down=null;dragging=false;stage.classList.remove('grabbing');}});
 // tooltip (quick, hover)
 function showTip(i,el){{
   const f=FIRMS[i]; if(!f||!card.hidden&&card.dataset.i==i)return;
@@ -415,14 +429,12 @@ function placeCard(){{
 }}
 function closeCard(){{card.classList.remove('on');card.hidden=true;cardEl=null;
   document.querySelectorAll('.pin.sel').forEach(p=>p.classList.remove('sel'));}}
-stage.addEventListener('pointerdown',e=>{{if(e.target===svg||e.target.closest('.land,.sea'))closeCard();}});
 document.querySelectorAll('.pin').forEach(p=>{{
   const i=+p.dataset.i;
   p.addEventListener('mouseenter',()=>{{p.classList.add('hot');showTip(i,p);}});
   p.addEventListener('mouseleave',()=>{{p.classList.remove('hot');hideTip();}});
   p.addEventListener('focus',()=>{{p.classList.add('hot');showTip(i,p);}});
   p.addEventListener('blur',()=>{{p.classList.remove('hot');hideTip();}});
-  p.addEventListener('click',e=>{{e.stopPropagation(); if(moved){{moved=false;return;}} openCard(i,p);}});
   p.addEventListener('keydown',e=>{{if(e.key==='Enter'||e.key===' '){{e.preventDefault();openCard(i,p);}}}});
 }});
 document.querySelectorAll('.legend button').forEach(btn=>{{
