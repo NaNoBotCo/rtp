@@ -9,8 +9,7 @@ OUT = ROOT / "docs" / "data" / "base.json"
 LAT0, LON0 = 54.5, -3.5
 BBOX = (-11.0, 49.6, 2.6, 61.0)          # lon min, lat min, lon max, lat max
 K = 100.0                                # px per degree of latitude
-KEEP = {"United Kingdom", "Ireland", "Isle of Man", "France", "Belgium",
-        "Netherlands", "Guernsey", "Jersey"}
+KEEP = {"United Kingdom", "Ireland", "Isle of Man"}
 
 
 def project(lon, lat):

@@ -1,6 +1,6 @@
 """Compose docs/index.html from base.json (basemap) + list.json (firms).
 Counts and pin coordinates are computed here at build time, never typed."""
-import json, math, pathlib, html, re
+import json, math, pathlib, html, re, time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 D = ROOT / "docs" / "data"
@@ -105,7 +105,7 @@ HTML = f"""<!DOCTYPE html>
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?b={int(time.time())}">
 </head>
 <body>
 <header class="bar"><div class="wrap">
