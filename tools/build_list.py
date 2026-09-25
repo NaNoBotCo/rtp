@@ -90,6 +90,14 @@ def main():
             uniq.append(r)
     rows = uniq
 
+    # Re-sort tiers by lead warmth (hot -> cold), so A/B/C read call-first -> longest:
+    #   old A (buys testing, outsourced)  -> A  (hottest)
+    #   old C (resells a test, swap firm) -> B  (warm)
+    #   old B (no test yet, new line)     -> C  (coldest)
+    WARMTH = {"A": "A", "C": "B", "B": "C"}
+    for r in rows:
+        r["tier"] = WARMTH.get(r["tier"], r["tier"])
+
     cache = json.loads(GEO.read_text()) if GEO.exists() else {}
     office = geocode(RTP_OFFICE, cache) or geocode("City Road, London", cache)
     public, problems = [], []

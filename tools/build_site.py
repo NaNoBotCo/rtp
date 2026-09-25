@@ -120,7 +120,7 @@ HTML = f"""<!DOCTYPE html>
       <div class="strip">
         <div class="s"><div class="v">{total}</div><div class="k">firms placed</div></div>
         <div class="s"><div class="v">{C['A']}</div><div class="k">tier A · already buy testing</div></div>
-        <div class="s"><div class="v">{C['B']}+{C['C']}</div><div class="k">tier B &amp; C · switch targets</div></div>
+        <div class="s"><div class="v">{C['B']}+{C['C']}</div><div class="k">tier B &amp; C · warm, then cold</div></div>
       </div>
     </div>
     <div class="mapwrap" id="map">
@@ -139,8 +139,8 @@ HTML = f"""<!DOCTYPE html>
       <div class="legend" role="group" aria-label="Filter the map by tier">
         <button class="all" data-f="all" aria-pressed="true"><i></i>All {total}</button>
         <button class="a" data-f="A" aria-pressed="true"><i></i>A · buys ({C['A']})</button>
-        <button class="b" data-f="B" aria-pressed="true"><i></i>B · sells ({C['B']})</button>
-        <button class="c" data-f="C" aria-pressed="true"><i></i>C · switch ({C['C']})</button>
+        <button class="b" data-f="B" aria-pressed="true"><i></i>B · switch ({C['B']})</button>
+        <button class="c" data-f="C" aria-pressed="true"><i></i>C · new line ({C['C']})</button>
       </div>
       <p class="mapfoot">Distance straight-line from RTP, London. Towns from public
       records; named contacts delivered privately.</p>
@@ -193,20 +193,21 @@ HTML = f"""<!DOCTYPE html>
 
   <section id="tiers" class="reveal">
     <div class="eyebrow">How the {total} are sorted</div>
-    <h2>Three tiers, by how ready they are</h2>
+    <h2>Three tiers, hottest first</h2>
+    <p class="sub" style="margin-bottom:22px">Colour runs hot to cold: red is call-first, blue is the longest sell.</p>
     <div class="grid g3">
-      <div class="card"><span class="tag a">Tier A · {C['A']}</span>
+      <div class="card"><span class="tag a">Tier A · {C['A']} · hottest</span>
         <h3>Already buys testing</h3>
         <p>Lists penetration testing but has no CREST team of its own — so it already pays
         an outside tester. The call offers a better one, with the non-solicit in writing.</p></div>
       <div class="card"><span class="tag b">Tier B · {C['B']}</span>
+        <h3>Already resells a test</h3>
+        <p>Bundles a CREST-branded test today through another supplier. The call is a
+        straight swap — on price, turnaround and the written non-solicit.</p></div>
+      <div class="card"><span class="tag c">Tier C · {C['C']} · coldest</span>
         <h3>Sells the security around it</h3>
         <p>Cyber Essentials, managed detection, ISO 27001 clients — everything but the test.
-        Pentest is the next line on a quote they already send.</p></div>
-      <div class="card"><span class="tag c">Tier C · {C['C']}</span>
-        <h3>Ready to switch</h3>
-        <p>Bundles a CREST-branded test today through someone else. The call is a straight
-        swap of supplier, on price and turnaround.</p></div>
+        Pentest is a new line on a quote they already send.</p></div>
     </div>
     <h2 style="margin-top:46px;font-size:26px">A sample, from the real list</h2>
     <div class="samp">{samp}</div>

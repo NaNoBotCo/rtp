@@ -83,7 +83,7 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 .pin .halo{opacity:.14;transition:opacity .3s}
 .pin.A .dot,.pin.A .halo{fill:var(--verm)}
 .pin.B .dot,.pin.B .halo{fill:var(--gold)}
-.pin.C .dot,.pin.C .halo{fill:var(--jade)}
+.pin.C .dot,.pin.C .halo{fill:var(--sky)}
 .pin:hover .dot,.pin.hot .dot{r:8.5}
 .pin.off{opacity:.12;pointer-events:none}
 .office .core{fill:var(--cream)}
@@ -102,7 +102,7 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 .legend button:hover{transform:translateY(-1px)}
 .legend button[aria-pressed=false]{opacity:.45}
 .legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
-.legend .a i{background:var(--verm)} .legend .b i{background:var(--gold)} .legend .c i{background:var(--jade)}
+.legend .a i{background:var(--verm)} .legend .b i{background:var(--gold)} .legend .c i{background:var(--sky)}
 .legend .all i{background:var(--cream)}
 .maptip{position:absolute;pointer-events:none;z-index:6;padding:9px 13px;border-radius:11px;font-size:13.5px;
   background:rgba(21,15,8,.94);border:1px solid var(--edge);box-shadow:var(--shadow);max-width:250px;
@@ -149,7 +149,7 @@ h2 span{font-family:"Noto Sans Thai",sans-serif;color:var(--gold-deep);font-size
   border-radius:99px;margin-bottom:12px;font-weight:600}
 .tag.a{background:rgba(255,106,69,.16);color:var(--verm)}
 .tag.b{background:rgba(231,190,106,.16);color:var(--gold)}
-.tag.c{background:rgba(127,200,160,.16);color:var(--jade)}
+.tag.c{background:rgba(143,179,217,.16);color:var(--sky)}
 
 /* gap two-column */
 .gap{display:grid;gap:14px}
@@ -176,7 +176,7 @@ h2 span{font-family:"Noto Sans Thai",sans-serif;color:var(--gold-deep);font-size
   transition:border-color .25s}
 .samp .row:hover{border-color:var(--edge)}
 .samp .dot{width:11px;height:11px;border-radius:50%}
-.samp .a .dot,.dot.a{background:var(--verm)} .samp .b .dot,.dot.b{background:var(--gold)} .samp .c .dot,.dot.c{background:var(--jade)}
+.samp .a .dot,.dot.a{background:var(--verm)} .samp .b .dot,.dot.b{background:var(--gold)} .samp .c .dot,.dot.c{background:var(--sky)}
 .samp .co{font-weight:600;color:var(--cream)}
 .samp .rg{font-size:13px;color:var(--cream-faint);margin-top:2px}
 .samp .fact{font-size:13.5px;color:var(--cream-dim);text-align:right;max-width:22em}
