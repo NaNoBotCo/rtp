@@ -54,7 +54,7 @@ bloom = "".join(bloom)
 ox, oy = project(data["office"]["lon"], data["office"]["lat"])
 office = (f'<g class="office"><circle class="ring" cx="{ox}" cy="{oy}" r="5"/>'
           f'<circle class="core" cx="{ox}" cy="{oy}" r="3.5"/>'
-          f'<text class="lbl" x="{ox+11}" y="{oy+4}">RTP · London</text></g>')
+          f'<text class="lbl" x="{ox-9}" y="{oy+4}">RTP · London</text></g>')
 
 # scale bar (100 km), lower-left
 sb_x, sb_y, sb_len = 30, base["h"] - 40, base["km100"]
@@ -164,10 +164,10 @@ HTML = f"""<!DOCTYPE html>
           <button data-z="out" aria-label="Zoom out">&minus;</button>
           <button data-z="reset" aria-label="Reset the map">&#10530;</button>
         </div>
-        <p class="maphint">Scroll to zoom · drag to pan · tap a dot for the phone number</p>
         <div class="maptip" id="tip" hidden></div>
         <div class="mapcard" id="card" hidden></div>
       </div>
+      <p class="maphint">Scroll to zoom · drag to pan · tap a dot for the phone number</p>
       <div class="legend" role="group" aria-label="Filter the map by tier">
         <button class="all" data-f="all" aria-pressed="true"><i></i>All {total}</button>
         <button class="a" data-f="A" aria-pressed="true"><i></i>A · buys ({C['A']})</button>
