@@ -79,6 +79,8 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 .land.home{fill:#3c2b1c;stroke:rgba(231,190,106,.5);stroke-width:1.1}
 .grat{stroke:rgba(231,190,106,.05);stroke-width:.7;fill:none}
 .pin{cursor:pointer}
+.pin .hit{fill:transparent}
+.bloom,.office,.scale,.grat,.sea{pointer-events:none}
 .pin .dot{transition:r .35s var(--spring),opacity .3s}
 .pin .halo{opacity:.14;transition:opacity .3s}
 .pin.A .dot,.pin.A .halo{fill:var(--verm)}
