@@ -136,17 +136,16 @@ HTML = f"""<!DOCTYPE html>
         {scale}
       </svg>
       <div class="maptip" id="tip" hidden></div>
+      <div class="legend" role="group" aria-label="Filter the map by tier">
+        <button class="all" data-f="all" aria-pressed="true"><i></i>All {total}</button>
+        <button class="a" data-f="A" aria-pressed="true"><i></i>A · buys ({C['A']})</button>
+        <button class="b" data-f="B" aria-pressed="true"><i></i>B · sells ({C['B']})</button>
+        <button class="c" data-f="C" aria-pressed="true"><i></i>C · switch ({C['C']})</button>
+      </div>
+      <p class="mapfoot">Distance straight-line from RTP, London. Towns from public
+      records; named contacts delivered privately.</p>
     </div>
   </section>
-
-  <div class="legend" role="group" aria-label="Filter the map by tier">
-    <button class="all" data-f="all" aria-pressed="true"><i></i>All {total}</button>
-    <button class="a" data-f="A" aria-pressed="true"><i></i>A · buys testing ({C['A']})</button>
-    <button class="b" data-f="B" aria-pressed="true"><i></i>B · sells security ({C['B']})</button>
-    <button class="c" data-f="C" aria-pressed="true"><i></i>C · switch ({C['C']})</button>
-  </div>
-  <p class="mapfoot">Straight-line distance from RTP, London. Firm town from public
-  records; named contacts are delivered privately, not shown here.</p>
 
   <section id="market" class="reveal">
     <div class="eyebrow">The market</div>
