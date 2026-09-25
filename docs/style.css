@@ -112,6 +112,50 @@ h1 em{font-style:normal;background:linear-gradient(100deg,var(--verm),var(--gold
 .maptip span{color:var(--cream-dim)}
 .mapfoot{font-size:12px;color:var(--cream-faint);text-align:center;margin-top:10px}
 
+/* zoomable stage */
+.mapstage{position:relative;width:100%;touch-action:none}
+#uk{cursor:grab}
+.mapstage.grabbing #uk{cursor:grabbing}
+.pin .dot,.pin .halo{transform-box:fill-box;transform-origin:center}
+.pin.sel .halo{opacity:.5}
+.pin.sel .dot{r:9;stroke:var(--cream);stroke-width:1.6}
+.bloom{opacity:.5}
+.bl.A{fill:var(--verm)} .bl.B{fill:var(--gold)} .bl.C{fill:var(--sky)}
+@media (prefers-reduced-motion:no-preference){
+  .bloom{animation:breathe 6s ease-in-out infinite}
+  @keyframes breathe{0%,100%{opacity:.4}50%{opacity:.62}}
+  .pin .dot,.pin .halo{animation:popin .5s var(--spring) backwards;animation-delay:var(--d)}
+  @keyframes popin{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+}
+.mapctrl{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px;z-index:4}
+.mapctrl button{width:34px;height:34px;border-radius:9px;border:1px solid var(--edge);
+  background:rgba(21,15,8,.78);color:var(--gold);font-size:18px;line-height:1;cursor:pointer;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;
+  transition:background .2s,color .2s,transform .2s var(--spring)}
+.mapctrl button:hover{background:var(--gold);color:var(--lacquer);transform:translateY(-1px)}
+.maphint{position:absolute;left:10px;bottom:6px;right:52px;font-size:11px;color:var(--cream-faint);
+  pointer-events:none;letter-spacing:.02em;transition:opacity .3s}
+.mapstage.zoomed .maphint{opacity:.35}
+.mapcard{position:absolute;z-index:7;min-width:212px;max-width:264px;padding:14px 15px 15px;
+  border-radius:14px;background:rgba(21,15,8,.97);border:1px solid var(--edge);box-shadow:var(--shadow);
+  opacity:0;transform:translateY(6px) scale(.98);transition:opacity .18s,transform .2s var(--spring)}
+.mapcard.on{opacity:1;transform:none}
+.mapcard .x{position:absolute;top:7px;right:10px;background:none;border:none;color:var(--cream-faint);
+  font-size:20px;line-height:1;cursor:pointer}
+.mapcard .chip{display:inline-block;font-size:10.5px;letter-spacing:.03em;padding:3px 9px;border-radius:99px;
+  margin-bottom:9px;font-weight:600}
+.mapcard .chip.a{background:rgba(255,106,69,.16);color:var(--verm)}
+.mapcard .chip.b{background:rgba(231,190,106,.16);color:var(--gold)}
+.mapcard .chip.c{background:rgba(143,179,217,.16);color:var(--sky)}
+.mapcard b{display:block;color:var(--cream);font-size:16px;line-height:1.25;padding-right:14px}
+.mapcard .rg{display:block;color:var(--cream-faint);font-size:12.5px;margin:2px 0 8px}
+.mapcard .ev{font-size:12.5px;color:var(--cream-dim);line-height:1.42;margin-bottom:11px}
+.mapcard .tel{display:flex;align-items:center;justify-content:center;gap:7px;font-weight:700;font-size:16px;
+  color:var(--gold);background:rgba(231,190,106,.1);border:1px solid var(--edge);border-radius:10px;padding:9px 12px}
+.mapcard .tel:hover{background:var(--gold);color:var(--lacquer)}
+.mapcard .notel{font-size:13px;color:var(--cream-faint)}
+.mapcard .foot{display:block;font-size:11px;color:var(--cream-faint);margin-top:9px}
+
 /* sections */
 section{padding:80px 0 20px}
 .eyebrow{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--verm);margin-bottom:11px}
