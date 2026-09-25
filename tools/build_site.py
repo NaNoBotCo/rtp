@@ -1,6 +1,6 @@
 """Compose docs/index.html from base.json (basemap) + list.json (firms).
 Counts and pin coordinates are computed here at build time, never typed."""
-import json, math, pathlib, html
+import json, math, pathlib, html, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 D = ROOT / "docs" / "data"
@@ -35,17 +35,20 @@ for lat in range(50, 61, 2):
     grat.append(f'<line class="grat" x1="{a[0]}" y1="{a[1]}" x2="{b[0]}" y2="{b[1]}"/>')
 grat = "".join(grat)
 
-# pins
-pins = []
+# pins + a blurred heat-bloom layer (dense clusters glow)
+pins, bloom = [], []
 for i, r in enumerate(rows):
     x, y = project(r["lon"], r["lat"])
     title = f'{esc(r["co"])} — {esc(r["reg"].split(",")[0])} · tier {r["t"]}'
+    delay = round(0.15 + i * 0.011, 3)
+    bloom.append(f'<circle class="bl {r["t"]}" cx="{x}" cy="{y}" r="17"/>')
     pins.append(
         f'<g class="pin {r["t"]}" data-t="{r["t"]}" data-i="{i}" tabindex="0" role="button" '
-        f'aria-label="{title}">'
+        f'aria-label="{title}" style="--d:{delay}s">'
         f'<circle class="halo" cx="{x}" cy="{y}" r="13"/>'
         f'<circle class="dot" cx="{x}" cy="{y}" r="5.5"/></g>')
 pins = "".join(pins)
+bloom = "".join(bloom)
 
 # RTP office marker
 ox, oy = project(data["office"]["lon"], data["office"]["lat"])
@@ -60,9 +63,23 @@ scale = (f'<g class="scale"><line x1="{sb_x}" y1="{sb_y}" x2="{sb_x+sb_len}" y2=
          f'<line x1="{sb_x+sb_len}" y1="{sb_y-4}" x2="{sb_x+sb_len}" y2="{sb_y+4}"/>'
          f'<text x="{sb_x}" y="{sb_y-8}">100 km</text></g>')
 
-# firms as JSON for the tooltip (company-level only)
-firm_js = json.dumps([{"co": r["co"], "reg": r["reg"].split(",")[0], "t": r["t"],
-                       "km": r["km"], "ev": r["ev"][:90]} for r in rows], ensure_ascii=False)
+# firms as JSON for the tooltip + click card (company-level; phone is a gift to RTP)
+def cleantel(s):
+    m = re.search(r"\+?\d[\d ]{7,}\d", s or "")
+    if not m:
+        return "", ""
+    disp = m.group(0).strip()
+    digits = re.sub(r"\D", "", disp)
+    href = "+44" + digits[1:] if digits.startswith("0") else ("+" + digits)
+    return disp, href
+
+firms = []
+for r in rows:
+    disp, href = cleantel(r.get("tel", ""))
+    firms.append({"co": r["co"], "reg": r["reg"].split(",")[0], "t": r["t"], "km": r["km"],
+                  "ev": r["ev"][:120], "tel": disp, "href": href,
+                  "src": (r.get("src") or [""])[0]})
+firm_js = json.dumps(firms, ensure_ascii=False)
 
 # ---- proof sample: 3 A + 2 B + 1 C, real firms, public facts only ----
 def pick(t, n):
@@ -124,26 +141,41 @@ HTML = f"""<!DOCTYPE html>
       </div>
     </div>
     <div class="mapwrap" id="map">
-      <svg viewBox="0 0 {base['w']} {base['h']}" role="img" aria-label="Map of the United Kingdom with {total} MSP prospects marked by tier">
-        <defs><radialGradient id="seaGrad" cx="50%" cy="35%" r="75%">
-          <stop offset="0%" stop-color="#1b140d"/><stop offset="100%" stop-color="#120c06"/>
-        </radialGradient></defs>
-        <rect class="sea" x="0" y="0" width="{base['w']}" height="{base['h']}"/>
-        <g>{grat}</g>
-        <g>{land}</g>
-        <g id="pins">{pins}</g>
-        {office}
-        {scale}
-      </svg>
-      <div class="maptip" id="tip" hidden></div>
+      <div class="mapstage">
+        <svg id="uk" viewBox="0 0 {base['w']} {base['h']}" role="img" aria-label="Zoomable map of the United Kingdom with {total} MSP prospects marked by tier; select one for its phone number">
+          <defs>
+            <radialGradient id="seaGrad" cx="50%" cy="35%" r="75%">
+              <stop offset="0%" stop-color="#1b140d"/><stop offset="100%" stop-color="#120c06"/>
+            </radialGradient>
+            <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="11"/>
+            </filter>
+          </defs>
+          <rect class="sea" x="0" y="0" width="{base['w']}" height="{base['h']}"/>
+          <g>{grat}</g>
+          <g>{land}</g>
+          <g class="bloom" filter="url(#soft)">{bloom}</g>
+          <g id="pins">{pins}</g>
+          {office}
+          {scale}
+        </svg>
+        <div class="mapctrl">
+          <button data-z="in" aria-label="Zoom in">+</button>
+          <button data-z="out" aria-label="Zoom out">&minus;</button>
+          <button data-z="reset" aria-label="Reset the map">&#10530;</button>
+        </div>
+        <p class="maphint">Scroll to zoom · drag to pan · tap a dot for the phone number</p>
+        <div class="maptip" id="tip" hidden></div>
+        <div class="mapcard" id="card" hidden></div>
+      </div>
       <div class="legend" role="group" aria-label="Filter the map by tier">
         <button class="all" data-f="all" aria-pressed="true"><i></i>All {total}</button>
         <button class="a" data-f="A" aria-pressed="true"><i></i>A · buys ({C['A']})</button>
         <button class="b" data-f="B" aria-pressed="true"><i></i>B · switch ({C['B']})</button>
         <button class="c" data-f="C" aria-pressed="true"><i></i>C · new line ({C['C']})</button>
       </div>
-      <p class="mapfoot">Distance straight-line from RTP, London. Towns from public
-      records; named contacts delivered privately.</p>
+      <p class="mapfoot">Distance straight-line from RTP, London. Towns from public records.
+      Switchboard numbers are RTP's to keep.</p>
     </div>
   </section>
 
@@ -307,25 +339,91 @@ HTML = f"""<!DOCTYPE html>
 
 <script>
 const FIRMS={firm_js};
-const svg=document.querySelector('.mapwrap svg'), tip=document.getElementById('tip'),
-      wrap=document.querySelector('.mapwrap');
+const stage=document.querySelector('.mapstage'), svg=document.getElementById('uk'),
+      tip=document.getElementById('tip'), card=document.getElementById('card');
+const TIER={{A:'buys testing now',B:'resells a test — swap the supplier',C:'no test yet — a new line'}};
+const VB0={{x:0,y:0,w:svg.viewBox.baseVal.width,h:svg.viewBox.baseVal.height}};
+let vb={{...VB0}};
+function applyVB(){{svg.setAttribute('viewBox',`${{vb.x}} ${{vb.y}} ${{vb.w}} ${{vb.h}}`);
+  if(!card.hidden) placeCard();}}
+function clientToSvg(cx,cy){{const r=svg.getBoundingClientRect();
+  return {{x:vb.x+(cx-r.left)/r.width*vb.w, y:vb.y+(cy-r.top)/r.height*vb.h}};}}
+function zoomAt(cx,cy,factor){{
+  const p=clientToSvg(cx,cy);
+  let w=vb.w/factor, h=vb.h/factor;
+  w=Math.min(VB0.w,Math.max(VB0.w/9,w)); h=w*VB0.h/VB0.w;
+  vb.x=p.x-(p.x-vb.x)*(w/vb.w); vb.y=p.y-(p.y-vb.y)*(h/vb.h); vb.w=w; vb.h=h;
+  clamp(); applyVB();
+}}
+function clamp(){{
+  vb.x=Math.min(Math.max(vb.x,-40),VB0.w-vb.w+40);
+  vb.y=Math.min(Math.max(vb.y,-40),VB0.h-vb.h+40);
+  stage.classList.toggle('zoomed', vb.w<VB0.w-1);
+}}
+// wheel zoom
+svg.addEventListener('wheel',e=>{{e.preventDefault();
+  zoomAt(e.clientX,e.clientY, e.deltaY<0?1.22:1/1.22);}},{{passive:false}});
+// buttons
+document.querySelectorAll('.mapctrl button').forEach(b=>b.addEventListener('click',()=>{{
+  const r=svg.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  if(b.dataset.z==='in') zoomAt(cx,cy,1.6);
+  else if(b.dataset.z==='out') zoomAt(cx,cy,1/1.6);
+  else {{vb={{...VB0}}; applyVB(); clamp(); closeCard();}}
+}}));
+// drag to pan (pointer), suppress click if moved
+let drag=null, moved=false;
+svg.addEventListener('pointerdown',e=>{{drag={{x:e.clientX,y:e.clientY}};moved=false;svg.setPointerCapture(e.pointerId);}});
+svg.addEventListener('pointermove',e=>{{if(!drag)return;
+  const r=svg.getBoundingClientRect(), dx=(e.clientX-drag.x)/r.width*vb.w, dy=(e.clientY-drag.y)/r.height*vb.h;
+  if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){{moved=true;stage.classList.add('grabbing');}}
+  vb.x-=dx; vb.y-=dy; drag={{x:e.clientX,y:e.clientY}}; clamp(); applyVB();
+}});
+function endDrag(){{drag=null;stage.classList.remove('grabbing');}}
+svg.addEventListener('pointerup',endDrag); svg.addEventListener('pointercancel',endDrag);
+// tooltip (quick, hover)
 function showTip(i,el){{
-  const f=FIRMS[i]; if(!f)return;
-  tip.innerHTML='<b>'+f.co+'</b><span>'+f.reg+' · tier '+f.t+' · ~'+f.km+' km from London</span>';
-  const b=el.getBBox(), r=svg.getBoundingClientRect(), wr=wrap.getBoundingClientRect(),
-        sx=r.width/svg.viewBox.baseVal.width, sy=r.height/svg.viewBox.baseVal.height;
+  const f=FIRMS[i]; if(!f||!card.hidden&&card.dataset.i==i)return;
+  tip.innerHTML='<b>'+f.co+'</b><span>'+f.reg+' · tier '+f.t+'</span>';
+  const b=el.getBoundingClientRect(), wr=stage.getBoundingClientRect();
   tip.hidden=false; tip.classList.add('on');
-  let x=(r.left-wr.left)+(b.x+b.width/2)*sx - tip.offsetWidth/2;
-  let y=(r.top-wr.top)+(b.y)*sy - tip.offsetHeight - 8;
-  tip.style.left=Math.max(4,x)+'px'; tip.style.top=Math.max(4,y)+'px';
+  tip.style.left=Math.max(4,Math.min(b.left-wr.left+b.width/2-tip.offsetWidth/2, wr.width-tip.offsetWidth-4))+'px';
+  tip.style.top=Math.max(4,b.top-wr.top-tip.offsetHeight-8)+'px';
 }}
 function hideTip(){{tip.classList.remove('on');}}
+// click card (with phone, a gift to RTP)
+let cardEl=null;
+function openCard(i,el){{
+  const f=FIRMS[i]; if(!f)return; hideTip(); cardEl=el; card.dataset.i=i;
+  const tel=f.tel?('<a class="tel" href="tel:'+f.href+'">📞 '+f.tel+'</a>'):'<span class="notel">number on the private list</span>';
+  const src=f.src?(' · <a href="'+f.src+'" target="_blank" rel="noopener">source</a>'):'';
+  card.innerHTML='<button class="x" aria-label="Close">&times;</button>'
+    +'<span class="chip '+f.t.toLowerCase()+'">Tier '+f.t+' · '+TIER[f.t]+'</span>'
+    +'<b>'+f.co+'</b><span class="rg">'+f.reg+' · ~'+f.km+' km from RTP</span>'
+    +'<p class="ev">'+(f.ev||'')+'</p>'+tel+'<span class="foot">Public switchboard'+src+'</span>';
+  card.hidden=false; requestAnimationFrame(()=>card.classList.add('on'));
+  card.querySelector('.x').addEventListener('click',closeCard);
+  document.querySelectorAll('.pin.sel').forEach(p=>p.classList.remove('sel')); el.classList.add('sel');
+  placeCard();
+}}
+function placeCard(){{
+  if(!cardEl)return; const b=cardEl.getBoundingClientRect(), wr=stage.getBoundingClientRect();
+  let x=b.left-wr.left+b.width/2-card.offsetWidth/2;
+  x=Math.max(6,Math.min(x,wr.width-card.offsetWidth-6));
+  let y=b.top-wr.top-card.offsetHeight-12;
+  if(y<6) y=b.bottom-wr.top+12;
+  card.style.left=x+'px'; card.style.top=y+'px';
+}}
+function closeCard(){{card.classList.remove('on');card.hidden=true;cardEl=null;
+  document.querySelectorAll('.pin.sel').forEach(p=>p.classList.remove('sel'));}}
+stage.addEventListener('pointerdown',e=>{{if(e.target===svg||e.target.closest('.land,.sea'))closeCard();}});
 document.querySelectorAll('.pin').forEach(p=>{{
   const i=+p.dataset.i;
   p.addEventListener('mouseenter',()=>{{p.classList.add('hot');showTip(i,p);}});
   p.addEventListener('mouseleave',()=>{{p.classList.remove('hot');hideTip();}});
   p.addEventListener('focus',()=>{{p.classList.add('hot');showTip(i,p);}});
   p.addEventListener('blur',()=>{{p.classList.remove('hot');hideTip();}});
+  p.addEventListener('click',e=>{{e.stopPropagation(); if(moved){{moved=false;return;}} openCard(i,p);}});
+  p.addEventListener('keydown',e=>{{if(e.key==='Enter'||e.key===' '){{e.preventDefault();openCard(i,p);}}}});
 }});
 document.querySelectorAll('.legend button').forEach(btn=>{{
   btn.addEventListener('click',()=>{{
