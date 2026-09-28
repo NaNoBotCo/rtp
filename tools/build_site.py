@@ -17,6 +17,14 @@ def project(lon, lat):
     return round(x, 1), round(y, 1)
 
 
+def clip(s, n):
+    """Evidence line for the page: drop internal edit notes, cut at a word, mark the cut."""
+    s = re.sub(r"\s*\b[A-Z]{4,}:\s*[^;]*", "", s or "").strip(" ;")
+    if len(s) <= n:
+        return s
+    return s[:n].rsplit(" ", 1)[0].rstrip(" ;,(") + "…"
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -78,7 +86,7 @@ firms = []
 for r in rows:
     disp, href = cleantel(r.get("tel", ""))
     firms.append({"co": r["co"], "reg": r["reg"].split(",")[0], "t": r["t"], "km": r["km"],
-                  "ev": r["ev"][:120], "tel": disp, "href": href,
+                  "ev": clip(r["ev"], 120), "tel": disp, "href": href,
                   "src": (r.get("src") or [""])[0]})
 firm_js = json.dumps(firms, ensure_ascii=False)
 
@@ -90,7 +98,7 @@ samp = "".join(
     f'<div class="row {r["t"].lower()}"><span class="dot"></span>'
     f'<div><div class="co">{esc(r["co"])}</div>'
     f'<div class="rg">{esc(r["reg"].split(",")[0])} · {esc(r["size"]) or "size on file"}</div></div>'
-    f'<div class="fact">{esc(r["ev"][:110])}</div></div>' for r in sample)
+    f'<div class="fact">{esc(clip(r["ev"], 110))}</div></div>' for r in sample)
 
 built = data["built"]
 total = C["total"]
