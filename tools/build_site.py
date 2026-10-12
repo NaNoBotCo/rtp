@@ -110,6 +110,17 @@ HTML = f"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UK MSP channel — for Red Team Partners</title>
 <meta name="description" content="A screened calling list of {total} UK MSPs that could resell Red Team Partners under their own brand, and the Chiang Rai desk to work it. Prepared by motdang.net.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="motdang.net">
+<meta property="og:title" content="UK MSP channel — for Red Team Partners">
+<meta property="og:description" content="A screened calling list of {total} UK MSPs that could resell Red Team Partners under their own brand, and the Chiang Rai desk to work it. Prepared by motdang.net.">
+<meta property="og:url" content="https://nanobotco.github.io/rtp/">
+<meta property="og:image" content="https://nanobotco.github.io/rtp/card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Map of the United Kingdom with glowing points for each MSP on the list, beside the headline Your UK channel, already mapped.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nanobotco.github.io/rtp/card.jpg">
 <meta name="theme-color" content="#150f08">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex">
